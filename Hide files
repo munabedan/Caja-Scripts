@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Get the selected folder's URI
+selected_folders_uri="$CAJA_SCRIPT_SELECTED_FILE_PATHS"
+
+# .hidden file uri
+hidden_file_uri="$CAJA_SCRIPT_CURRENT_URI"
+
+
+# check if the .hidden file exists
+if [ ! -f "$hidden_file_uri/.hidden" ]; then
+    # create the .hidden file
+    touch "$hidden_file_uri/.hidden"
+fi
+
+# loop through the selected files and add them to the .hidden file
+for file in $selected_folders_uri; do
+    echo "$(basename "$file")" >> ".hidden"
+done
+
+
+# using zenity notify the user that the files are now hidden 
+
+text="\n $selected_folders_uri \n\n Hit the reload button on the toolbar to hide the files."
+
+zenity --info --title="Reload required" --text="$text"
+
+
+
